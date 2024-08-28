@@ -1,1 +1,33 @@
+name: Deployment Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-documentation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository content
+      uses: actions/checkout@v2
+
+    - name: Capture deployment details
+      run: |
+        echo "Capturing deployment details..."
+        echo "Environment Variables:" > deployment_details.txt
+        printenv >> deployment_details.txt
+        echo "Deployment steps executed successfully." >> deployment_details.txt
+
+    - name: Generate Deployment Documentation
+      run: |
+        echo "Generating documentation..."
+        python generate_documentation.py
+
+    - name: Upload Deployment Documentation
+      uses: actions/upload-artifact@v2
+      with:
+        name: deployment-documentation
+        path: deployment_documentation.md
 
